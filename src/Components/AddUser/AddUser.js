@@ -40,7 +40,21 @@ const AddUser = () => {
             const proceed = window.confirm('are you sure you want to delete?')
             if(proceed){
                 console.log('deleting ', id);
+                const url =`http://localhost:5000/user/${id}`;
+                fetch(url, {
+                    method: 'DELETE'
+                })
+                .then(res => res.json())
+                .then(data => {
+                    // refresh remaining data or deleted data
+                    if(data.deletedCount >0){
+                        console.log(data);
+                        const remaining = users.filter( user => user._id !== id);
+                        setUsers(remaining);
+                    }
+                })
             }
+
         }
     return (
         <div>
