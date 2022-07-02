@@ -1,6 +1,8 @@
 import React from 'react';
-import  {Link} from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import {Link} from 'react-router-dom';
 const AddUser = () => {
+
     const handleAddUser = event =>{
         event.preventDefault();
         const name = event.target.name.value;
@@ -8,22 +10,60 @@ const AddUser = () => {
         const user = {name, email};
         console.log(user);
         event.target.reset();
-        // post client side to serer side
-        
+        // sent data to server side
+        fetch('http://localhost:5000/user', {
+            method: 'POST',
+            headers:{
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(user),
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log('success', data);
+            event.target.reset();
+        })
+
+
     }
+
+    // get data from server side and show display 
+        // show data from server
+        const [users, setUsers] = useState([]);
+        useEffect(()=>{
+            fetch(`http://localhost:5000/user`)
+            .then(res => res.json())
+            .then(data => setUsers(data) )
+        }, []);
+
+        const handleDelete = id =>{
+            const proceed = window.confirm('are you sure you want to delete?')
+            if(proceed){
+                console.log('deleting ', id);
+            }
+        }
     return (
         <div>
-            <h2> Add New User</h2>
+            <h2>Add User</h2>
             <ul>
                 <li>
-                    <Link to='/' >Back to home</Link>
+                    <Link to="/" >Back to Home</Link>
                 </li>
             </ul>
-            <form onSubmit={handleAddUser} >
+            <form onSubmit={handleAddUser}>
                 <input type="text" name='name' placeholder='name' />
                 <input type="email" name='email' placeholder='email' />
                 <input type="submit" value="Add User" />
             </form>
+            <h2> Total User {users.length} </h2>
+            <ul>
+                {
+                    users.map(u => <li key={u._id} > 
+                    {u.name} : {u.email} 
+                    <button onClick={ ()=>handleDelete(u._id) } > X </button>
+                    </li> )
+                }
+            </ul>
         </div>
     );
 };
