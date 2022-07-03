@@ -15,6 +15,9 @@ const Home = () => {
                 <li>
                     <Link to="/adduser" > Add User </Link>
                 </li>
+                <li>
+                    <Link to="/updateuser" > Update User </Link>
+                </li>
             </ul>
             <h2> Total Users ${users.length} </h2>
             

@@ -48,6 +48,7 @@ const AddUser = () => {
                 .then(data => {
                     // refresh remaining data or deleted data
                     if(data.deletedCount >0){
+                        // deletedCount get from console.log 
                         console.log(data);
                         const remaining = users.filter( user => user._id !== id);
                         setUsers(remaining);
@@ -74,6 +75,7 @@ const AddUser = () => {
                 {
                     users.map(u => <li key={u._id} > 
                     {u.name} : {u.email} 
+                    <Link to={`/updateuser/${u._id}`} > <button> Update</button> </Link>
                     <button onClick={ ()=>handleDelete(u._id) } > X </button>
                     </li> )
                 }
