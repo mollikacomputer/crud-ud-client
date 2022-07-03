@@ -22,8 +22,7 @@ const AddUser = () => {
         .then(data => {
             console.log('success', data);
             event.target.reset();
-        })
-
+        });
 
     }
 
